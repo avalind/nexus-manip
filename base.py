@@ -21,16 +21,27 @@ def separate_location(df):
 		coords = parts[1].split("-")
 
 		return (parts[0], \
-				int(coords[0].replace(",","")), \
-				int(coords[1].replcae(",","")))
+				coords[0], \
+				coords[1])
 
 		
 	column_name = "Chromosome Region"
-
+	location_parts = df[column_name].apply(lambda x: pd.Series(split_location_string(x)))
 	
+	print location_parts
+
+def to_simple_bed(dataset):
+	pass
+
+def to_bed(dataset):
+	pass
+
+def to_gff(dataset):
+	pass
 
 def main():
-	print load(sys.argv[1])
-
+	dataset = load(sys.argv[1])
+	separate_location(dataset)
+	
 if __name__ == "__main__":
 	main()
