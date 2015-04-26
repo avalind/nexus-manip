@@ -21,27 +21,50 @@ def separate_location(df):
 		coords = parts[1].split("-")
 
 		return (parts[0], \
-				coords[0], \
-				coords[1])
+				coords[0].translate(None, ''.join(",")), \
+				coords[1].translate(None, ''.join(",")))
 
 		
 	column_name = "Chromosome Region"
 	location_parts = df[column_name].apply(lambda x: pd.Series(split_location_string(x)))
-	
-	print location_parts
+	location_parts.columns = ['Chromosome', 'Start', 'Stop']
 
-def to_simple_bed(dataset):
-	pass
+	df['Chromosome'] = location_parts['Chromosome']
+	df['Start'] = location_parts['Start']
+	df['Stop'] = location_parts['Stop']
 
-def to_bed(dataset):
-	pass
+	return df
+
+def split_by_sample(dataset):
+	per_sample = dataset.groupby(['Sample'])
+	return per_sample
+
+def to_simple_bed(dataset, filehandle):
+	"""
+		writes a .bed file to filehandle
+		containing the segments present in dataset.
+	"""
+	def to_bedrow(r):
+		return r['Chromosome']+"\t"+ \
+			   r['Start']+"\t"+ \
+			   r['Stop']+"\t"+ \
+			   r['Event']
+
+	for index, row in dataset.iterrows():
+		filehandle.write(to_bedrow(row)+"\n")
 
 def to_gff(dataset):
+	""" 
+		Generates a gff file containing all columns
+		present in dataset.
+	"""
 	pass
 
 def main():
 	dataset = load(sys.argv[1])
-	separate_location(dataset)
+	dataset = separate_location(dataset)
+	to_simple_bed(dataset, sys.stdout)
+
 	
 if __name__ == "__main__":
 	main()
