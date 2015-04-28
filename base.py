@@ -37,7 +37,9 @@ def separate_location(df):
 
 def split_by_sample(dataset):
 	per_sample = dataset.groupby(['Sample'])
-	return per_sample
+	for key, group in per_sample:
+		with open(key+".bed", "w") as handle:
+			print to_simple_bed(group, handle)
 
 def to_simple_bed(dataset, filehandle):
 	"""
@@ -63,7 +65,8 @@ def to_gff(dataset):
 def main():
 	dataset = load(sys.argv[1])
 	dataset = separate_location(dataset)
-	to_simple_bed(dataset, sys.stdout)
+	print split_by_sample(dataset)
+	#to_simple_bed(dataset, sys.stdout)
 
 	
 if __name__ == "__main__":
