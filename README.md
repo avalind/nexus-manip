@@ -1,5 +1,8 @@
 # nexus-manip
 
+(Mostly for myself since I tend to export a lot of data segmented in Biodiscoverys
+software for downstream analysis in bedtools)
+
 Lets you convert exported tables from Biodiscovery Nexus Copy Number software
 to some more useful file formats (.bed and .gff) for downstream processing.
 
