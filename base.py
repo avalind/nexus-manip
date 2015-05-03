@@ -63,11 +63,13 @@ def to_gff(dataset):
 	pass
 
 def main():
-	dataset = load(sys.argv[1])
-	dataset = separate_location(dataset)
-	print split_by_sample(dataset)
-	#to_simple_bed(dataset, sys.stdout)
-
+	if len(sys.argv) < 2:
+		print "usage: base.py [path to export nexus table]"
+	else:
+		dataset = load(sys.argv[1])
+		dataset = separate_location(dataset)
+		print split_by_sample(dataset)
+		#to_simple_bed(dataset, sys.stdout)
 	
 if __name__ == "__main__":
 	main()
